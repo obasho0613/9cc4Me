@@ -77,6 +77,7 @@ Token *new_token(TokenKind kind, Token *cur, char *str) {
 
 // 入力文字列pをトークナイズしてそれを返す
 Token *tokenize(char *p) {
+	// ダミーのhead要素を作る
 	Token head;
 	head.next = NULL;
 	Token *cur = &head;
@@ -103,6 +104,7 @@ Token *tokenize(char *p) {
 	}
 
 	new_token(TK_EOF, cur, p);
+	// 最後に返す
 	return head.next;
 }
 
