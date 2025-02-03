@@ -1,5 +1,5 @@
 #!/bin/bash
-try() {
+assert() {
 	expected="$1"
 	input="$2"
 
@@ -17,8 +17,9 @@ try() {
 	fi
 }
 
-try 0 0 
-try 42 42
+assert 0 0 
+assert 42 42
+assert 21 "5+20-4"
 
 echo OK
 
