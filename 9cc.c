@@ -117,17 +117,10 @@ Token *tokenize() {
 }
 
 /*
-加減算の生成規則
-expr = num ("+" num | "-" num)*
-
-優先順位を含む四則演算の生成規則
-乗除算の生成規則mulを経由してnumが展開される
-expr = mul ("+" mul | "-" mul)*
-mul  = num ("*" num | "/" num)*
-
 優先順位のカッコ()を四則演算に追加した文法の生成規則
 expr    = mul ("+" mul | "-" mul)*
-mul     = primary ("*" primary | "/" primary)*
+mul     = unary ("*" unary | "/" unary)*
+unary   = ("+" | "-")? primary
 primary = num | "(" expr ")"
 */
 
@@ -168,6 +161,7 @@ Node *new_node_num(int val) {
 Node *expr();
 Node *mul();
 Node *primary();
+Node *unary();
 
 // expr = mul ("+" mul | "-" mul)*
 Node *expr() {
@@ -186,21 +180,27 @@ Node *expr() {
 // mul = primary ("*" primary | "/" primary)*
 Node *mul() {
 	//printf("%c:%s\n", *(token->str), __func__);
-	Node *node = primary();
+	Node *node = unary();
 
 	for (;;) {
 		if (consume('*'))
-			node = new_node(ND_MUL, node, primary());
+			node = new_node(ND_MUL, node, unary());
 		else if (consume('/'))
-			node = new_node(ND_DIV, node, primary());
+			node = new_node(ND_DIV, node, unary());
 		else
 			return node;
 	}
 }
+Node *unary() {
+	if (consume('+'))
+		return unary();
+	if (consume('-'))
+		return new_node(ND_SUB, new_node_num(0), unary());
+	return primary();
+}
 // primary = "(" expr ")" | num
 Node *primary() {
 	//printf("%c:%s\n", *(token->str), __func__);
-
 	// 次のトークンが"("なら、"(" expr ")"のはず
 	if (consume('(')) {
 		Node *node = expr();
