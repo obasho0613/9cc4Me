@@ -1,18 +1,14 @@
 #include "9cc.h"
 
 // 現在着目しているトークン
-Token *token;
-
-// 入力プログラム
-char *user_input;
+extern Token *token;
 
 int main(int argc, char **argv) {
 	if (argc != 2)
 		fprintf(stderr, "引数の個数が正しくありません\n");
 
 	// トークナイズしてパースする
-	user_input = argv[1];
-	token = tokenize();
+	token = tokenize(argv[1]);
 	Node *node = expr();
 
 	// アセンブリの前半部分を出力

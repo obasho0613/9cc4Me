@@ -1,7 +1,5 @@
 #include "9cc.h"
 
-extern char *user_input;
-
 bool startsWith(char *p, char *q) {
 	return memcmp(p,q,strlen(q)) == 0;
 }
@@ -17,7 +15,7 @@ Token *new_token(TokenKind kind, Token *cur, char *str, int len) {
 }
 
 // 入力文字列pをトークナイズしてそれを返す
-Token *tokenize() {
+Token *tokenize(char *user_input) {
 	char *p = user_input;
 	// ダミーのhead要素を作る
 	Token head;

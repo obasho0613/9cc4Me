@@ -1,10 +1,7 @@
 #include "9cc.h"
 
 // 現在着目しているトークン
-extern Token *token;
-
-// 入力プログラム
-extern char *user_input;
+Token *token;
 
 // 次のトークンが期待している記号の時には、トークンを一つ読み進めて
 // 真を返す。それ以外の場合には偽を返す。
